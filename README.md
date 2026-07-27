@@ -52,7 +52,7 @@ Insert the ESP32 across the central gap of the breadboard so that the module bod
 
 ### 3. Red LED
 
-- LED anode (longer leg) -> 220Ω or 1K resistor -> `D22` on the ESP32.
+- LED anode (longer leg) -> 150Ω or 220Ω resistor -> `D22` on the ESP32.
 - LED cathode (shorter leg) -> `GND` rail.
 - The resistor can be placed on either side of the LED, as long as it remains in series.
 
