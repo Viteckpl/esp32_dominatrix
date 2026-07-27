@@ -1,6 +1,6 @@
 # esp32_dominatrix
 
-A simple, solderless ESP32 project built as a standalone device that reacts after a random amount of time, requires physical presence inside a defined zone, and expects confirmation through a button press. The current version is intentionally designed as a practical learning prototype on a breadboard, focused on testing, iteration, and future expansion rather than on enclosure design or mobile power. [1][2]
+A simple, solderless ESP32 project built as a standalone device that reacts after a random amount of time, requires physical presence inside a defined zone, and expects confirmation through a button press. The current version is intentionally designed as a practical learning prototype on a breadboard, focused on testing, iteration, and future expansion rather than on enclosure design or mobile power.
 
 ## Project goals
 
@@ -12,16 +12,16 @@ The current working prototype uses only the components that are already integrat
 
 | Component | Role in the project | Notes |
 |---|---|---|
-| ESP32 ESP-32S / ESP32 Dev Module | Main microcontroller | Programmed from Arduino IDE as `ESP32 Dev Module`. [3] |
-| HC-SR04 | Presence detection through distance measurement | In this prototype version it is powered from 3.3V for simpler and safer GPIO handling. [1][4] |
-| TM1637 4-digit 7-segment display | Countdown display | Controlled with the `TM1637Display` library. [5][2] |
-| Arcade push button | Acknowledge reaction, acknowledge punishment, enter/exit sleep mode | Wired using `INPUT_PULLUP` logic. [6][7] |
-| Red LED | Punishment indication and sleep mode indication | Requires a series resistor. [8][9] |
-| Passive buzzer | Call signal and short confirmation signals | Requires a driven signal from GPIO. [10][11] |
+| ESP32 ESP-32S / ESP32 Dev Module | Main microcontroller | Programmed from Arduino IDE as `ESP32 Dev Module`. |
+| HC-SR04 | Presence detection through distance measurement | In this prototype version it is powered from 3.3V for simpler and safer GPIO handling. |
+| TM1637 4-digit 7-segment display | Countdown display | Controlled with the `TM1637Display` library. |
+| Arcade push button | Acknowledge reaction, acknowledge punishment, enter/exit sleep mode | Wired using `INPUT_PULLUP` logic. |
+| Red LED | Punishment indication and sleep mode indication | Requires a series resistor. |
+| Passive buzzer | Call signal and short confirmation signals | Requires a driven signal from GPIO. |
 | 830-point breadboard | Solderless assembly | All connections are made with Dupont wires. |
-| 220Ω or 1K resistor | LED current limiting | Used in series with the red LED. [8][9] |
+| 220Ω or 1K resistor | LED current limiting | Used in series with the red LED. |
 | Dupont jumper wires | Electrical connections | No soldering required. |
-| Micro USB cable | Power and programming | Powers the full prototype from USB. [3] |
+| Micro USB cable | Power and programming | Powers the full prototype from USB. |
 
 ## Pin mapping
 
@@ -54,43 +54,43 @@ Insert the ESP32 across the central gap of the breadboard so that the module bod
 
 - LED anode (longer leg) -> 220Ω or 1K resistor -> `D22` on the ESP32.
 - LED cathode (shorter leg) -> `GND` rail.
-- The resistor can be placed on either side of the LED, as long as it remains in series. [8][9]
+- The resistor can be placed on either side of the LED, as long as it remains in series.
 
 ### 4. Arcade button
 
-The final version uses the ESP32 internal pull-up resistor, so no external pull-up or pull-down resistor is needed. The button only has to short the input pin to ground when pressed. [6][7]
+The final version uses the ESP32 internal pull-up resistor, so no external pull-up or pull-down resistor is needed. The button only has to short the input pin to ground when pressed.
 
 - One side of the button -> `D21` on the ESP32.
 - The other side of the button -> `GND` rail.
-- Unpressed state reads as logical `1`; pressed state reads as logical `0`. [6][7]
+- Unpressed state reads as logical `1`; pressed state reads as logical `0`.
 
-If the button has 4 pins, it should be placed so that it crosses the breadboard center gap. Typically, the two pins on one side are internally connected, and the two pins on the other side are also internally connected; pressing the button bridges both sides. [12][13]
+If the button has 4 pins, it should be placed so that it crosses the breadboard center gap. Typically, the two pins on one side are internally connected, and the two pins on the other side are also internally connected; pressing the button bridges both sides.
 
 ### 5. Passive buzzer
 
 - `+` pin of the buzzer -> `D23` on the ESP32.
 - `-` pin of the buzzer -> `GND` rail.
-- Because this is a passive buzzer, it is driven by generated tones from the microcontroller rather than by constant DC power alone. [10][11]
+- Because this is a passive buzzer, it is driven by generated tones from the microcontroller rather than by constant DC power alone.
 
 ### 6. TM1637 display
 
-Check the silkscreen labels on the actual module, because the order of pins can vary between manufacturers. The logical wiring, however, stays the same. [5][2]
+Check the silkscreen labels on the actual module, because the order of pins can vary between manufacturers. The logical wiring, however, stays the same.
 
 - `VCC` -> `3V3`
 - `GND` -> `GND`
 - `CLK` -> `D18`
-- `DIO` -> `D19` [5][2]
+- `DIO` -> `D19`
 
 ### 7. HC-SR04 sensor
 
-In standard usage, the HC-SR04 is usually powered from 5V, and its Echo line can output 5V, which requires extra care when used with ESP32 GPIO. In this prototype, a simpler test-oriented approach is used: the sensor is powered from 3.3V so the setup remains easier and safer during early learning and breadboard experimentation. [1][4]
+In standard usage, the HC-SR04 is usually powered from 5V, and its Echo line can output 5V, which requires extra care when used with ESP32 GPIO. In this prototype, a simpler test-oriented approach is used: the sensor is powered from 3.3V so the setup remains easier and safer during early learning and breadboard experimentation.
 
 - `VCC` -> `3V3`
 - `GND` -> `GND`
 - `Trig` -> `D4`
-- `Echo` -> `D5` [1][4]
+- `Echo` -> `D5`
 
-This approach is convenient for a learning prototype, but it can reduce range and stability, which is why software filtering is used in the sketch. [1][14][4]
+This approach is convenient for a learning prototype, but it can reduce range and stability, which is why software filtering is used in the sketch.
 
 ## Current configuration
 
@@ -119,7 +119,7 @@ const unsigned long SLEEP_SIGNAL_OFF_MS = 180;
 // ==================
 ```
 
-This means the device waits for a random duration between 10 minutes and 3 hours, gives 30 seconds to react after the call begins, and then requires presence in front of the sensor for a random duration between 10 seconds and 10 minutes. Presence detection uses a 60 cm threshold and tolerates up to 5 consecutive failed readings to compensate for the imperfect stability of the HC-SR04 in this simplified 3.3V setup. [1][14]
+This means the device waits for a random duration between 10 minutes and 3 hours, gives 30 seconds to react after the call begins, and then requires presence in front of the sensor for a random duration between 10 seconds and 10 minutes. Presence detection uses a 60 cm threshold and tolerates up to 5 consecutive failed readings to compensate for the imperfect stability of the HC-SR04 in this simplified 3.3V setup. 
 
 ## State machine
 
@@ -146,16 +146,16 @@ Holding the button for the configured duration enters sleep mode. Entering sleep
 ## Upload and run
 
 1. Open the project in Arduino IDE.
-2. Select `ESP32 Dev Module` as the board. [3]
-3. Make sure the `TM1637Display` library is installed. [5][2]
+2. Select `ESP32 Dev Module` as the board.
+3. Make sure the `TM1637Display` library is installed.
 4. Upload the sketch to the ESP32.
 5. Open the Serial Monitor at 115200 baud if diagnostic logs are needed. 
 
 ## Known limitations
 
-The main limitation of the current prototype is the use of the HC-SR04 as a simple presence detector. The HC-SR04 is fundamentally a distance sensor, not a dedicated occupancy sensor, so it requires software filtering and does not provide the same confidence as a sensor specifically designed for reliable presence detection. [1][15]
+The main limitation of the current prototype is the use of the HC-SR04 as a simple presence detector. The HC-SR04 is fundamentally a distance sensor, not a dedicated occupancy sensor, so it requires software filtering and does not provide the same confidence as a sensor specifically designed for reliable presence detection.
 
-In addition, running the HC-SR04 from 3.3V is a conscious prototype compromise: it simplifies early-stage learning and breadboard safety, but it can reduce measurement stability. Future versions may benefit from improved power handling or from replacing the sensor with one that is better suited to presence sensing. [1][4]
+In addition, running the HC-SR04 from 3.3V is a conscious prototype compromise: it simplifies early-stage learning and breadboard safety, but it can reduce measurement stability. Future versions may benefit from improved power handling or from replacing the sensor with one that is better suited to presence sensing.
 
 ## Suggested repository structure
 
