@@ -19,7 +19,7 @@ The current working prototype uses only the components that are already integrat
 | Red LED | Punishment indication and sleep mode indication | Requires a series resistor. |
 | Passive buzzer | Call signal and short confirmation signals | Requires a driven signal from GPIO. |
 | 830-point breadboard | Solderless assembly | All connections are made with Dupont wires. |
-| 220Ω or 1K resistor | LED current limiting | Used in series with the red LED. |
+| 150Ω resistor | LED current limiting | Used in series with the red LED. |
 | Dupont jumper wires | Electrical connections | No soldering required. |
 | Micro USB cable | Power and programming | Powers the full prototype from USB. |
 
